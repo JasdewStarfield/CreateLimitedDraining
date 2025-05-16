@@ -1,14 +1,15 @@
 <p align="center"><img src="./src/main/resources/icon.png" alt="Epic Logo" width="200"></p>
-<h1 align="center">Create: Limited Draining  <br>
+<h1 align="center">
+    Create: Limited Draining  <br>
     机械动力：流体抽取限制
-    <br><br>
 </h1>
-<p align="center">
+<h4 align="center">
     “If you want infinite lava, then you'll have to drain it in the nether. But you already knew that.”
-    <br />
+    <br>
     “如果你想要无限岩浆，就得来下界自己抽。这规矩你懂的。”
-    <br />
-</p>
+</h4>
+
+---
 
 <p>A Create addon that allows you to control the biomes to drain certain fluids infinitely.
 <p>一个机械动力附属，允许你控制允许某种流体无限抽取的群系。</p>
