@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "createlimiteddraining.refmap.json",
   "mixins": [
-    "FluidManipulationBehaviourMixin"
+    "FluidManipulationBehaviourMixin",
+    "HosePulleyBlockEntityMixin"
   ],
   "client": [
   ],

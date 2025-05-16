@@ -1,0 +1,4 @@
+{
+    "createinfinitedraining.hint.hose_pulley.biome_check_failed": "该流体不支持在此生物群系内无限抽取",
+    "createinfinitedraining.hint.hose_pulley.biome_check_failed.title": "无法无限抽取"
+}

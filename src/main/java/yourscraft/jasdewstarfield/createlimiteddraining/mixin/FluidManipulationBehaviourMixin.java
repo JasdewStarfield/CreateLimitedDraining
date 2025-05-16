@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import yourscraft.jasdewstarfield.createlimiteddraining.common.HosePulleyAccessor;
 import yourscraft.jasdewstarfield.createlimiteddraining.common.LimitedDrainingBiomeTags;
 import yourscraft.jasdewstarfield.createlimiteddraining.common.LimitedDrainingFluidTags;
 
@@ -31,6 +32,10 @@ public class FluidManipulationBehaviourMixin {
         if (createlimiteddraining$isAllowedFluid(world, fluid)) {
             // 检测Biome
             if (!createlimiteddraining$isAllowedBiome(world, biome)) {
+                if (instance.blockEntity instanceof HosePulleyAccessor pulley) {
+                    pulley.createlimiteddraining$setBiomeCheckFailed(true); // 通过接口调用方法
+                    //System.out.println("Biome check failed flag set to true.");
+                }
                 cir.setReturnValue(false);
                 return;
             }
@@ -71,5 +76,4 @@ public class FluidManipulationBehaviourMixin {
         }
         return false;
     }
-
 }
