@@ -28,13 +28,18 @@ public class FluidManipulationBehaviourMixin {
         Biome biome = world.getBiome(pos).value();
         DimensionType dimension = world.dimensionType();
 
+        // 获取HosePulleyAccessor实例
+        HosePulleyAccessor pulley = null;
+        if (instance.blockEntity instanceof HosePulleyAccessor) {
+            pulley = (HosePulleyAccessor) instance.blockEntity;
+        }
+
         // 检测流体，如果是允许的流体，则继续检测Biome和Dimension，否则走Create的默认逻辑
         if (createlimiteddraining$isAllowedFluid(world, fluid)) {
             // 检测Biome
             if (!createlimiteddraining$isAllowedBiome(world, biome)) {
-                if (instance.blockEntity instanceof HosePulleyAccessor pulley) {
+                if (pulley != null) {
                     pulley.createlimiteddraining$setBiomeCheckFailed(true); // 通过接口调用方法
-                    //System.out.println("Biome check failed flag set to true.");
                 }
                 cir.setReturnValue(false);
                 return;
@@ -43,6 +48,16 @@ public class FluidManipulationBehaviourMixin {
             // 检测Dimension（暂未使用）
             if (!createlimiteddraining$isAllowedDimension(world, dimension)) {
                 cir.setReturnValue(false);
+            }
+
+            // 所有检查都通过，重置标志位
+            if (pulley != null) {
+                pulley.createlimiteddraining$setBiomeCheckFailed(false);
+            }
+        }
+        else {
+            if (pulley != null) {
+                pulley.createlimiteddraining$setBiomeCheckFailed(false); // 通过接口调用方法
             }
         }
     }
@@ -53,8 +68,6 @@ public class FluidManipulationBehaviourMixin {
             var biomeRegistry = world.registryAccess().registryOrThrow(Registries.BIOME);
             ResourceKey<Biome> biomeKey = biomeRegistry.getResourceKey(biome).orElse(null);
             if (biomeKey != null) {
-                //ResourceLocation biomeName = biomeKey.location();
-                //return biomeName.toString().equals("minecraft:plains");
                 return biomeRegistry.getHolderOrThrow(biomeKey).is(LimitedDrainingBiomeTags.INFINITE_DRAINING_BIOMES);
             }
         }
@@ -72,7 +85,6 @@ public class FluidManipulationBehaviourMixin {
         ResourceKey<Fluid> fluidResourceKey = fluidRegistry.getResourceKey(fluid).orElse(null);
         if (fluidResourceKey != null) {
             return fluidRegistry.getHolderOrThrow(fluidResourceKey).is(LimitedDrainingFluidTags.INFINITE_DRAINING_FLUIDS);
-            //return fluidResourceKey.location().toString().equals("minecraft:lava");
         }
         return false;
     }
