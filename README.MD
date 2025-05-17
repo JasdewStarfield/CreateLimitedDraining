@@ -22,4 +22,4 @@
 <p>&nbsp;</p>
 
 <h1></h1>
-<h4 align="center">Find out more on our <a href="https://www.curseforge.com">Curseforge</a> or <a href="https://modrinth.com">Modrinth</a> Page (Not available yet)</h4>
+<h4 align="center">Find out more on our <a href="https://www.curseforge.com/minecraft/mc-mods/create-limited-draining">Curseforge</a> or <a href="https://modrinth.com">Modrinth</a> Page (Not available yet)</h4>
