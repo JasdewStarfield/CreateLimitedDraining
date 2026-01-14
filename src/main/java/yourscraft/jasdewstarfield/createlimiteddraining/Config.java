@@ -1,54 +1,38 @@
 package yourscraft.jasdewstarfield.createlimiteddraining;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-
-// An example config class. This is not required, but it's a good idea to have one to keep your config organized.
-// Demonstrates how to use Forge's config APIs
 @Mod.EventBusSubscriber(modid = Createlimiteddraining.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Config {
-    /*
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
-    private static final ForgeConfigSpec.BooleanValue LOG_DIRT_BLOCK = BUILDER.comment("Whether to log the dirt block on common setup").define("logDirtBlock", true);
-
-    private static final ForgeConfigSpec.IntValue MAGIC_NUMBER = BUILDER.comment("A magic number").defineInRange("magicNumber", 42, 0, Integer.MAX_VALUE);
-
-    public static final ForgeConfigSpec.ConfigValue<String> MAGIC_NUMBER_INTRODUCTION = BUILDER.comment("What you want the introduction message to be for the magic number").define("magicNumberIntroduction", "The magic number is... ");
-
-    // a list of strings that are treated as resource locations for items
-    private static final ForgeConfigSpec.ConfigValue<List<? extends String>> ITEM_STRINGS = BUILDER.comment("A list of items to log on common setup.").defineListAllowEmpty("items", List.of("minecraft:iron_ingot"), Config::validateItemName);
+    // 定义规则列表
+    // 格式说明: "流体ID或Tag;群系ID或Tag"
+    // 示例: "#minecraft:lava;#minecraft:is_nether" (岩浆只能在下界无限抽)
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> DRAINING_RULES = BUILDER
+            .comment("Define infinite draining groups.")
+            .comment("Format: 'Fluid1, Fluid2... ; Biome1, Biome2...'")
+            .comment("Logic: If the fluid is in the left list AND the biome is in the right list, it can be drained infinitely.")
+            .comment("Note that this rule is applied BEFORE the basic Create rule.")
+            .comment("If a fluid bypassed this mod's rule, it still needs to go through Create's rule. (By default, more than 10000 B and has tag #create:bottomless/allow)")
+            .comment("Examples:")
+            .comment("  'minecraft:water, #forge:milk ; #minecraft:is_ocean, minecraft:river' (Water and Milk are infinite in Oceans and Rivers)")
+            .comment("  '#minecraft:lava ; #minecraft:is_nether' (Lava is infinite in Nether)")
+            .defineList("drainingRules",
+                    List.of("#minecraft:lava ; #minecraft:is_nether"),
+                    obj -> obj instanceof String);
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
-    public static boolean logDirtBlock;
-    public static int magicNumber;
-    public static String magicNumberIntroduction;
-    public static Set<Item> items;
+    public static List<? extends String> drainingRules = List.of();
 
-    private static boolean validateItemName(final Object obj) {
-        return obj instanceof final String itemName && ForgeRegistries.ITEMS.containsKey(new ResourceLocation(itemName));
-    }
     @SubscribeEvent
-
     static void onLoad(final ModConfigEvent event) {
-        logDirtBlock = LOG_DIRT_BLOCK.get();
-        magicNumber = MAGIC_NUMBER.get();
-        magicNumberIntroduction = MAGIC_NUMBER_INTRODUCTION.get();
-
-        // convert the list of strings into a set of items
-        items = ITEM_STRINGS.get().stream().map(itemName -> ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName))).collect(Collectors.toSet());
+        drainingRules = DRAINING_RULES.get();
     }
-    */
 }
