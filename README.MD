@@ -1,4 +1,4 @@
-<p align="center"><img src="./src/main/resources/icon.png" alt="Epic Logo" width="200"></p>
+<p align="center"><img src="./src/main/resources/createlimiteddraining.png" alt="Epic Logo" width="200"></p>
 <h1 align="center">
     Create: Limited Draining  <br>
     机械动力：流体抽取限制
