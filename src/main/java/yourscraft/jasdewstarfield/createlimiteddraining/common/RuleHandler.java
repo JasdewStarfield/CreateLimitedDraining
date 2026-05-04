@@ -6,10 +6,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
-import yourscraft.jasdewstarfield.createlimiteddraining.Config;
-
-import java.util.Objects;
+import net.minecraft.core.registries.BuiltInRegistries;
+import yourscraft.jasdewstarfield.createlimiteddraining.CreateLimitedDrainingConfig;
 
 public class RuleHandler {
     /**
@@ -18,7 +16,7 @@ public class RuleHandler {
      */
     public static boolean canDrain(Level level, Fluid fluid, Biome biome) {
         // 遍历配置文件中的每一条规则
-        for (String rule : Config.drainingRules) {
+        for (String rule : CreateLimitedDrainingConfig.INSTANCE.drainingRules.get()) {
             String[] parts = rule.split(";");
             if (parts.length != 2) continue; // 格式错误跳过
 
@@ -66,13 +64,16 @@ public class RuleHandler {
             ResourceLocation loc = ResourceLocation.tryParse(matcher.substring(1));
             if (loc == null) return false;
             TagKey<Fluid> tag = TagKey.create(Registries.FLUID, loc);
-            return ForgeRegistries.FLUIDS.getHolder(fluid).map(h -> h.is(tag)).orElse(false);
+            return BuiltInRegistries.FLUID.getResourceKey(fluid)
+                    .flatMap(BuiltInRegistries.FLUID::getHolder)
+                    .map(h -> h.is(tag))
+                    .orElse(false);
         } else {
             // 是具体 ID
             ResourceLocation loc = ResourceLocation.tryParse(matcher);
             if (loc == null) return false;
-            ResourceLocation key = ForgeRegistries.FLUIDS.getKey(fluid);
-            return key != null && key.equals(loc);
+            ResourceLocation key = BuiltInRegistries.FLUID.getKey(fluid);
+            return key.equals(loc);
         }
     }
 

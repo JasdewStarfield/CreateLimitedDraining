@@ -2,6 +2,7 @@ package yourscraft.jasdewstarfield.createlimiteddraining.mixin;
 
 import com.simibubi.create.content.fluids.hosePulley.HosePulleyBlockEntity;
 import com.simibubi.create.foundation.item.TooltipHelper;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,14 +39,14 @@ public class HosePulleyBlockEntityMixin implements HosePulleyAccessor {
     }
 
     @Inject(method = "write", at = @At("HEAD"))
-    private void injectWrite(CompoundTag compound, boolean clientPacket, CallbackInfo ci) {
+    private void injectWrite(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket, CallbackInfo ci) {
         if (clientPacket) {
             compound.putBoolean("BiomeCheckFailed", createlimiteddraining$biomeCheckFailed);
         }
     }
 
     @Inject(method = "read", at = @At("HEAD"))
-    private void injectRead(CompoundTag compound, boolean clientPacket, CallbackInfo ci) {
+    private void injectRead(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket, CallbackInfo ci) {
         if (clientPacket) {
             createlimiteddraining$biomeCheckFailed = compound.getBoolean("BiomeCheckFailed");
         }
